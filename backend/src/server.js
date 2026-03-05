@@ -30,6 +30,11 @@ app.use("/api", routeRoutes);
 
 app.use("/api/reports", reportRoutes);
 
+// Add this before your app.listen()
+app.get('/', (req, res) => {
+  res.send('Backend is running successfully!');
+});
+
 /* Start Server */
 
 const PORT = process.env.PORT || 8080;
