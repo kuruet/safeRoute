@@ -3,21 +3,22 @@ import { getRoutes } from "../controllers/routeController.js";
 
 const router = express.Router();
 
-router.post("/routes", getRoutes);
-// console.time("route-total")
+router.post("/routes", async (req, res, next) => {
+  const startTime = Date.now();
 
-// console.time("openroute")
-// const routes = await getRoutes()
-// console.timeEnd("openroute")
+  console.log(
+    `[${new Date().toISOString()}] /api/routes request received`
+  );
 
-// console.time("reports")
-// const reports = await getReports()
-// console.timeEnd("reports")
+  try {
+    await getRoutes(req, res, next);
+  } finally {
+    const duration = Date.now() - startTime;
 
-// console.time("risk-score")
-// const scoredRoutes = calculateRisk(routes, reports)
-// console.timeEnd("risk-score")
-
-// console.timeEnd("route-total")
+    console.log(
+      `[${new Date().toISOString()}] /api/routes completed in ${duration} ms`
+    );
+  }
+});
 
 export default router;
