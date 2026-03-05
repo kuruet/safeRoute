@@ -7,6 +7,8 @@ const styles = {
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     position: "relative",
     overflow: "hidden",
+    marginTop: "auto",        // ← pushes footer to bottom when page content is short
+    flexShrink: 0,            // ← prevents footer from shrinking inside flex column layout
   },
   gradientAccent: {
     position: "absolute",
@@ -225,30 +227,111 @@ const Footer = () => {
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(20px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        @media (max-width: 900px) {
-          .sr-footer-grid { grid-template-columns: 1fr 1fr !important; }
+
+        /* ─── Global box-sizing safety net ──────────────────────────────── */
+        .sr-footer *,
+        .sr-footer *::before,
+        .sr-footer *::after {
+          box-sizing: border-box;
         }
-        @media (max-width: 560px) {
-          .sr-footer-grid { grid-template-columns: 1fr !important; text-align: center; }
-          .sr-brand-desc { max-width: 100% !important; }
-          .sr-badge-row { justify-content: center; }
+
+        /* ─── Tablet: 769px – 1024px — two-column grid ───────────────────  */
+        @media (max-width: 1024px) and (min-width: 769px) {
+          .sr-footer-grid {
+            grid-template-columns: 1.2fr 1fr !important;
+            gap: 32px !important;
+          }
+        }
+
+        /* ─── Large Mobile + small tablet: 481px – 768px ────────────────── */
+        @media (max-width: 768px) and (min-width: 481px) {
+          .sr-footer-grid {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 28px !important;
+          }
+          .sr-footer-container {
+            padding: 48px 20px 32px !important;
+          }
+        }
+
+        /* ─── Mobile: 320px – 480px — single column ─────────────────────── */
+        @media (max-width: 480px) {
+          .sr-footer-grid {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+            text-align: center;
+            margin-bottom: 32px !important;
+          }
+          .sr-footer-container {
+            padding: 40px 16px 28px !important;
+          }
+          .sr-brand-desc {
+            max-width: 100% !important;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          .sr-badge-row {
+            justify-content: center;
+          }
+          .sr-brand-logo-row {
+            justify-content: center;
+          }
+          .sr-link-column {
+            align-items: center;
+          }
+          .sr-link-column a {
+            padding-left: 0 !important; /* neutralise hover indent on touch */
+          }
+          .sr-social-row {
+            gap: 10px !important;
+          }
+          .sr-copyright {
+            font-size: 12px !important;
+          }
+          .sr-dev-credit {
+            font-size: 11px !important;
+          }
+        }
+
+        /* ─── Large Desktop: 1441px+ ──────────────────────────────────────  */
+        @media (min-width: 1441px) {
+          .sr-footer-container {
+            max-width: 1400px !important;
+            padding-left: 48px !important;
+            padding-right: 48px !important;
+          }
+        }
+
+        /* ─── Prevent horizontal overflow on all sizes ───────────────────  */
+        .sr-footer {
+          overflow-x: hidden;
+        }
+
+        /* ─── Touch: larger social button tap targets ────────────────────  */
+        @media (hover: none) and (pointer: coarse) {
+          .sr-social-btn {
+            width: 46px !important;
+            height: 46px !important;
+          }
         }
       `}</style>
-      <footer style={styles.footer}>
+
+      <footer style={styles.footer} className="sr-footer">
         <div style={styles.gradientAccent} />
         <div style={styles.glow} />
-        <div style={styles.container}>
+        <div style={styles.container} className="sr-footer-container">
 
           {/* Top Grid */}
           <div className="sr-footer-grid" style={styles.grid}>
 
             {/* Brand */}
             <div>
-              <div style={styles.brandLogoRow}>
+              <div style={styles.brandLogoRow} className="sr-brand-logo-row">
                 <div style={styles.shieldWrap}><ShieldIcon /></div>
                 <span style={styles.brandName}>SafeRoute</span>
               </div>
@@ -271,7 +354,7 @@ const Footer = () => {
             </div>
 
             {/* Product */}
-            <div style={styles.linkColumn}>
+            <div style={styles.linkColumn} className="sr-link-column">
               <div style={styles.columnTitle}>Product</div>
               <LinkItem>How SafeRoute Works</LinkItem>
               <LinkItem>Risk Engine</LinkItem>
@@ -279,7 +362,7 @@ const Footer = () => {
             </div>
 
             {/* Resources */}
-            <div style={styles.linkColumn}>
+            <div style={styles.linkColumn} className="sr-link-column">
               <div style={styles.columnTitle}>Resources</div>
               <LinkItem>Docs</LinkItem>
               <LinkItem>Blog</LinkItem>
@@ -287,7 +370,7 @@ const Footer = () => {
             </div>
 
             {/* Company */}
-            <div style={styles.linkColumn}>
+            <div style={styles.linkColumn} className="sr-link-column">
               <div style={styles.columnTitle}>Company</div>
               <LinkItem>About SafeRoute</LinkItem>
               <LinkItem>Privacy Policy</LinkItem>
@@ -296,7 +379,7 @@ const Footer = () => {
           </div>
 
           {/* Social Row */}
-          <div style={styles.socialRow}>
+          <div style={styles.socialRow} className="sr-social-row">
             <SocialButton label="GitHub" icon={<GitHubIcon />} />
             <SocialButton label="Twitter" icon={<TwitterIcon />} />
             <SocialButton label="LinkedIn" icon={<LinkedInIcon />} />
@@ -307,8 +390,8 @@ const Footer = () => {
 
           {/* Bottom */}
           <div style={styles.bottom}>
-            <p style={styles.copyright}>© 2026 SafeRoute. All rights reserved.</p>
-            <p style={styles.devCredit}>
+            <p style={styles.copyright} className="sr-copyright">© 2026 SafeRoute. All rights reserved.</p>
+            <p style={styles.devCredit} className="sr-dev-credit">
               Designed &amp; Developed by{" "}
               <span
                 style={{
