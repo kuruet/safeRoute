@@ -18,6 +18,11 @@ export const getRoutes = async (req, res) => {
 
     const routeData = await fetchRoutesFromORS(origin, destination);
 
+/* Safety guard: if routing service returns no routes */
+if (!routeData.routes || routeData.routes.length === 0) {
+  return res.json({ routes: [] });
+}
+
     /* Calculate raw risk for each route */
    const risks = await Promise.all(
   routeData.routes.map((route) => calculateRouteRisk(route.coordinates))

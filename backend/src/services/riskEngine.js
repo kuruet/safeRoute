@@ -37,7 +37,7 @@ export async function calculateRouteRisk(routeCoordinates) {
     return 0;
   }
 
-  const segments = sampleRouteSegments(routeCoordinates);
+const segments = sampleRouteSegments(routeCoordinates, 5);
 
   const segmentRisks = [];
 
