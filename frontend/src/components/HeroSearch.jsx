@@ -17,7 +17,7 @@ const styles = {
     borderRadius: "20px",
     boxShadow:
       "0 4px 24px rgba(56,189,248,0.10), 0 1px 4px rgba(0,0,0,0.07)",
-    padding: "20px",
+    padding: "32px 20px 20px",
     boxSizing: "border-box",
     animation: "heroSlideUp 0.35s cubic-bezier(0.16,1,0.3,1) both",
     position: "relative",
@@ -182,6 +182,26 @@ const styles = {
     animation: "spin 0.7s linear infinite",
     flexShrink: 0,
   },
+
+ womenBadge: {
+  position: "absolute",
+  top: "-12px",
+  right: "16px",
+  background: "linear-gradient(135deg, #EC4899, #F472B6)",
+  color: "#ffffff",
+  padding: "6px 12px",
+  borderRadius: "999px",
+  fontSize: "12px",
+  fontWeight: 600,
+  letterSpacing: "0.02em",
+  boxShadow: "0 6px 16px rgba(236,72,153,0.35)",
+  display: "flex",
+  alignItems: "center",
+  gap: "6px",
+  zIndex: 20
+},
+
+  
 };
 
 const SearchIcon = () => (
@@ -276,6 +296,9 @@ const HeroSearch = ({ setDestination, analyzeRoutes }) => {
 
   return (
     <>
+
+   
+
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         @keyframes heroSlideUp {
@@ -292,6 +315,10 @@ const HeroSearch = ({ setDestination, analyzeRoutes }) => {
       `}</style>
       <div style={styles.wrapper}>
         <div style={styles.card}>
+
+          <div style={styles.womenBadge}>
+ ♀ Built for Women's Safety
+</div>
           {/* Input Row */}
           <div style={inputRowStyle}>
             <span style={styles.searchIconWrap}><SearchIcon /></span>
