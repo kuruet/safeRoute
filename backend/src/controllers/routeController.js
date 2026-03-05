@@ -19,10 +19,13 @@ export const getRoutes = async (req, res) => {
     const routeData = await fetchRoutesFromORS(origin, destination);
 
     /* Calculate raw risk for each route */
-    for (const route of routeData.routes) {
-      const totalRisk = await calculateRouteRisk(route.coordinates);
-      route.rawRisk = totalRisk;
-    }
+   const risks = await Promise.all(
+  routeData.routes.map((route) => calculateRouteRisk(route.coordinates))
+);
+
+routeData.routes.forEach((route, index) => {
+  route.rawRisk = risks[index];
+});
 
     /* Find max risk among routes */
     const maxRisk = Math.max(...routeData.routes.map((r) => r.rawRisk), 1);

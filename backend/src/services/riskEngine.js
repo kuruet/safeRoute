@@ -26,22 +26,7 @@ function sampleRouteSegments(routeCoordinates, sampleRate = 2) {
 /*
 Find reports near a route segment
 */
-async function findNearbyReports(segment) {
-
-  const reports = await Report.find({
-    location: {
-      $near: {
-        $geometry: {
-          type: "Point",
-          coordinates: [segment.lng, segment.lat]
-        },
-        $maxDistance: 100
-      }
-    }
-  });
-
-  return reports;
-}
+ 
 
 /*
 Main Route Risk Calculation
@@ -56,11 +41,26 @@ export async function calculateRouteRisk(routeCoordinates) {
 
   const segmentRisks = [];
 
+  /* Fetch reports once instead of querying MongoDB per segment */
+  const allReports = await Report.find({});
+
   for (const segment of segments) {
 
-    const nearbyReports = await findNearbyReports(segment);
+    /* Find nearby reports in memory */
+    const nearbyReports = allReports.filter((report) => {
 
-    console.log("Segment reports:", nearbyReports.length);
+      const [reportLng, reportLat] = report.location.coordinates;
+
+      const distance = calculateDistanceMeters(
+        segment.lat,
+        segment.lng,
+        reportLat,
+        reportLng
+      );
+
+      return distance <= 100;
+
+    });
 
     let segmentRisk = 0;
 
