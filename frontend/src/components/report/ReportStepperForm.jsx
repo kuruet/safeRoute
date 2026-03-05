@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { API_BASE } from "../config/api";
+
 const ReportStepperForm = ({ location, setLocation }) => {
 
   const [step, setStep] = useState(1);
@@ -99,7 +101,7 @@ const [incidentTime, setIncidentTime] = useState("");  const [description, setDe
 
       setLoading(true);
 
-      const response = await fetch("http://localhost:5000/api/reports", {
+      const response =await fetch(`${API_BASE}/reports`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

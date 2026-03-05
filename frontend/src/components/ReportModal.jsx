@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { API_BASE } from "../config/api";
+
 const ReportModal = ({ isOpen, onClose }) => {
 
   const [category, setCategory] = useState("");
@@ -12,7 +14,7 @@ const ReportModal = ({ isOpen, onClose }) => {
 
     try {
 
-      const response = await fetch("http://localhost:5000/api/reports", {
+      const response = await fetch(`${API_BASE}/reports`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

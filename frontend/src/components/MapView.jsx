@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Map, { NavigationControl, Marker, Source, Layer } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
+import { API_BASE } from "../config/api";
 
 const MapView = ({ destination, routes, selectedRouteIndex }) => {
 
@@ -61,18 +62,15 @@ const MapView = ({ destination, routes, selectedRouteIndex }) => {
     const fetchReports = async () => {
 
       try {
+  const response = await fetch(`${API_BASE}/reports`);
 
-        const response = await fetch("http://localhost:5000/api/reports");
+  const data = await response.json();
 
-        const data = await response.json();
+  setReportsFromDB(data);
 
-        setReportsFromDB(data);
-
-      } catch (error) {
-
-        console.error("Failed to fetch reports:", error);
-
-      }
+} catch (error) {
+  console.error("Failed to fetch reports:", error);
+}
 
     };
 
