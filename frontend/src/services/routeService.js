@@ -1,4 +1,4 @@
-import { API_BASE } from "../../config/api";
+import { API_BASE } from "../config/api";
 export const fetchRoutes = async (origin, destination) => {
   try {
     const response = await fetch(`${API_BASE}/routes`, {

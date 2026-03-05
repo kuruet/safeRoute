@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Map, { NavigationControl, Marker, Source, Layer } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
-import { API_BASE } from "../../config/api";
+import { API_BASE } from "../config/api";
 
 const MapView = ({ destination, routes, selectedRouteIndex }) => {
 
